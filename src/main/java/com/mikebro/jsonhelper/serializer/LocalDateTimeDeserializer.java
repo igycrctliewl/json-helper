@@ -1,21 +1,24 @@
 package com.mikebro.jsonhelper.serializer;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
-public class JsonDateDeserializer extends JsonDeserializer<LocalDate> {
+public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 
 	@Override
-	public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+	public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
 			throws IOException, JsonProcessingException {
 
 		String dateString = jsonParser.getText();
-		return LocalDate.parse( dateString );
+		Instant instant = Instant.parse( dateString );
+		return instant.atZone( ZoneId.systemDefault() ).toLocalDateTime();
 	}
 
 }
